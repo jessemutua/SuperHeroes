@@ -2,8 +2,12 @@ class HeroPowersController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
     def create 
-        hero_power =HeroPower.create!(hero_power_params)
-        render json: hero_power.hero, status: :created
+        hero_power =HeroPower.create(hero_power_params)
+        if hero_power.save
+            render json: hero_power, status: :created
+        else
+            render_unprocessable_entity_response
+        end
     end
 
     private
